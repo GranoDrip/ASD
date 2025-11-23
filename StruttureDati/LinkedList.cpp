@@ -220,15 +220,28 @@ class LinkedList{
             }
         }
 
+        /*
+            === FUNZIONI DI MODIFICA ===
+            1. searchElement: Ritorna l'indice di un certo elemento
+            2. mergeSort: Ordina la lista con il Natural Merge Sort
+
+        */
+
+        void mergeSort(){
+            
+        }
+
 
         /*
             === FUNZIONI DI UTILITÀ ===
         
             1. toString: stampa la lista.
-            2. isEmpty: verifica se la lista è vuota.
-            3. getLength: restituisce la lunghezza della lista.
-            4. reverse: inverte la lista.
-            5. isEmpty: verifica se la lista è vuota.
+            2. reverse: inverte la lista.
+            3. isEmpty: verifica se la lista è vuota.
+            4. isSorted Controlla se è ordinata
+            5. merge: Merge two ordered lists
+
+
         */
 
         // Stampa la lista
@@ -242,6 +255,28 @@ class LinkedList{
             }
 
             std::cout << "END" << std::endl;
+        }
+
+        // Inverte una LL
+        void reverse(){
+
+            ListNode<T> * curr = head;
+            ListNode<T> * next;
+            ListNode<T> * prev = nullptr;
+
+            if (!isEmpty()){
+                while (curr != nullptr)
+                {
+                    next = curr->next;
+                    curr->next = prev;
+                    prev = curr;
+                    curr = next;
+                }
+                
+            }
+            
+            head = prev;
+
         }
 
         // Controlla se la lista è vuota
