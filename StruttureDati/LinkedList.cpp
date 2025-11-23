@@ -14,7 +14,7 @@ class ListNode{
         T val;
         ListNode<T> * next = nullptr;
     
-    friend class LinkedList;
+    friend class LinkedList<T>;
 };
 
 template <class T> 
@@ -142,7 +142,7 @@ class LinkedList{
        /*
             Inserisce un nodo in una lista ordinata
        */
-        void insertSorted(T, e);
+        void insertSorted(T e);
 
         // ============================================================ //
 
@@ -152,7 +152,6 @@ class LinkedList{
             1. removeFront: rimuove un nodo all'inizio della lista.
             2. removeBack: rimuove un nodo alla fine della lista.
             3. removeAt: rimuove un nodo in una posizione specifica.
-            4. removeValue: rimuove un nodo con un determinato valore.
 
         */
 
@@ -197,9 +196,56 @@ class LinkedList{
         }
 
         // Rimuove il nodo ad un determinato indice 
-        
+        void removeAt(int index){
+            ListNode<T> * curr = head;
+            ListNode<T> * prec = head;
+            int i = 0;
 
-        bool isEmpty(){
+            if (!isEmpty()){
+                if (index == 0){
+                    removeFront();
+                }else{
+
+                    while (curr != nullptr && i < index)
+                    {
+                        i++;
+                        prec = curr;
+                        curr = curr->next;
+                    }
+
+                    prec->next = curr->next;
+                    delete curr;
+                    
+                }
+            }
+        }
+
+
+        /*
+            === FUNZIONI DI UTILITÀ ===
+        
+            1. toString: stampa la lista.
+            2. isEmpty: verifica se la lista è vuota.
+            3. getLength: restituisce la lunghezza della lista.
+            4. reverse: inverte la lista.
+            5. isEmpty: verifica se la lista è vuota.
+        */
+
+        // Stampa la lista
+        void toString() const{
+            ListNode<T> * curr = head;
+
+            while (curr != nullptr)
+            {
+                std::cout << curr->val << " -> ";
+                curr = curr->next;
+            }
+
+            std::cout << "END" << std::endl;
+        }
+
+        // Controlla se la lista è vuota
+        bool isEmpty() const {
             return head==nullptr;
         }
 };
