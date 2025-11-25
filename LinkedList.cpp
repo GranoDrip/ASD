@@ -223,14 +223,21 @@ class LinkedList{
         /*
             === FUNZIONI DI MODIFICA ===
             1. searchElement: Ritorna l'indice di un certo elemento
-            2. mergeSort: Ordina la lista con il Natural Merge Sort
+            2. selectionSort: Ordina la lista con il Selection Sort
 
         */
 
-        void mergeSort(){
-            
-        }
+        /*
+            Selection Sort 
+        */
+        void mergeSort() {
 
+            // CODICE 
+
+        }
+        
+        
+        ; // Essendo che il merge ritorna una LL, prendo la sua testa e la assegno alla testa originale
 
         /*
             === FUNZIONI DI UTILITÀ ===
@@ -239,8 +246,8 @@ class LinkedList{
             2. reverse: inverte la lista.
             3. isEmpty: verifica se la lista è vuota.
             4. isSorted Controlla se è ordinata
-            5. merge: Merge two ordered lists
-
+            5. merge: Merge di due liste ordinate ( Utile per il mergesort )
+            6. divide: divide la lista in due liste ( Utile per il mergesort )
 
         */
 
@@ -283,4 +290,91 @@ class LinkedList{
         bool isEmpty() const {
             return head==nullptr;
         }
-};
+
+        // Merge di questa e un altra lista
+        LinkedList merge(LinkedList<T> * list) { // Metto const perche non modifico la lista originale
+            LinkedList<T> result = LinkedList<T>(); // Creiamo la lista 
+
+            ListNode<T> * curr1 = head; // Nodo che scorre la lista 1
+            ListNode<T> * curr2 = list->head; // Nodo che scorre la lista 2
+
+            // Finche uno dei due non finisce
+            while (curr1 && curr2)
+            {
+                // Se curr1 è > curr2 allora lo inserisce alla fine della lista
+                if (curr1->val < curr2->val){
+                    result.pushBack(curr1->val);
+                    curr1 = curr1->next; // Mando avanti c1 perche è stato inserito
+                }else{
+                    result.pushBack(curr2->val);
+                    curr2 = curr2->next; // Mando avanti c2 perche è stato inserito
+                }
+            }
+
+            // Adesso una delle due liste sarà sicuramente vuota quindi inserisco
+            // i nodi rimanenti all'interno della lista risultato.
+            while (curr1 != nullptr)
+            {
+                result.pushBack(curr1->val);
+                curr1 = curr1->next;
+
+            }
+
+            while (curr2 != nullptr)
+            {
+                result.pushBack(curr2->val);
+                curr2 = curr2->next;
+            }
+            
+            return result; // Ritorno risultato 
+
+        }
+    
+        // Divide 
+        void divide(LinkedList<T> * left, LinkedList<T> * right ){
+
+            if (head == nullptr || head->next == nullptr) {
+                left->head = head;
+                right->head = nullptr;
+                return;
+            }
+
+            ListNode<T> * slow = head;
+            ListNode<T> * fast = head;
+            ListNode<T>* prec = nullptr;
+
+            while (fast != nullptr && fast->next != nullptr)
+            {
+                prec = slow;
+                slow = slow->next;
+                fast = fast->next->next;
+            }
+
+            if (prec != nullptr)
+                prec->next = nullptr;
+
+            left->head = head;
+            right->head = slow;
+
+        }
+
+    };
+
+int main(){
+
+    LinkedList<int> l1 = LinkedList<int>();
+
+    l1.pushBack(10);
+    l1.pushBack(20);
+    l1.pushBack(30);
+    l1.pushBack(40);
+    l1.pushBack(3);
+
+    l1.toString();
+
+    l1.mergeSort();
+
+    l1.toString();
+
+    return 0;
+}
