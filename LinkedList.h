@@ -4,6 +4,36 @@
     con alcune funzioni utili per risolvere gli esercizi
 */
 
+/*
+== FUNZIONI DI INSERIMENTO ==
+- pushFront(T e)
+- pushBack(T e)
+- insertAt(int index, T e)
+- insertSorted(T e)
+- inserimentoOrdinato (T e) -- TODO
+
+== FUNZIONI DI CANCELLAZIONE ==
+- removeFront()
+- removeBack()
+- removeAt(int index)
+
+== FUNZIONI DI MODIFICA ==
+- searchElement(T e)
+- selectionSort()
+- changeAt(T e, int index)
+
+== FUNZIONI DI UTILITÀ ==
+- toString() const
+- reverse()
+- isEmpty() const
+- isSorted() -- TODO
+- merge(LinkedList<T> * list)
+- divide(LinkedList<T> * left, LinkedList<T> * right)
+*/
+
+#ifndef LINKEDLIST_H
+#define LINKEDLIST_H
+
 #include <iostream>
 
 template<class T> class LinkedList;
@@ -224,12 +254,34 @@ class LinkedList{
             === FUNZIONI DI MODIFICA ===
             1. searchElement: Ritorna l'indice di un certo elemento
             2. selectionSort: Ordina la lista con il Selection Sort
-
+            3. changeAt: cambia un elemento all'indice 
         */
 
-        /*
-            Selection Sort 
-        */
+        // Ricerca lineare di un elemento
+        int searchElement(T e){
+
+            ListNode<T> * curr = head;
+            int index = 0;
+            bool trovato = false;
+
+            if (!isEmpty()){
+                while (curr != nullptr)
+                {
+                    if(curr->val == e){
+                        trovato = true;
+                    }
+                    index++;
+                    curr = curr->next;
+                }
+
+            }
+            
+            
+            return index;
+
+        }
+
+        // Selection Sort
         void selectionSort() {
 
             ListNode<T> * i = head;
@@ -253,8 +305,20 @@ class LinkedList{
             
         }
         
-        
-        ; // Essendo che il merge ritorna una LL, prendo la sua testa e la assegno alla testa originale
+        void changeAt(T e,int index){
+            ListNode<T> * curr = head;
+            int i = 0;
+
+            if (!isEmpty()){
+                while (curr->next != nullptr && i < index)
+                {
+                    curr = curr->next;
+                    i++;
+                }
+
+                    curr->val = e;                    
+            }            
+        }
 
         /*
             === FUNZIONI DI UTILITÀ ===
@@ -376,3 +440,6 @@ class LinkedList{
         }
 
     };
+
+
+#endif
