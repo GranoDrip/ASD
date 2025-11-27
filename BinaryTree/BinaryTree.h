@@ -13,19 +13,20 @@ template <class T, class NodeType>
 class BinaryTree {
 private:
     // Stampa ricorsiva di un sottoalbero
-    virtual void printSubTree(const NodeType) const;
+    virtual void printSubTree(NodeType) const = 0;
 
 public:
 
-    /* === COSTRUTTORE E DISTRUTTORE === */
-    // Costruttore 
-    virtual void create() = 0; // Quando scrivo = 0, dico alle classi che ereditano che devono avere per forza quella funzione
+
+    //==== ATTENZIONE QUI >>>> virtual void erase() { }; // Quando scrivo = 0, dico alle classi che ereditano che devono avere per forza quella funzione // TODO: METTI = 0
 
     /* === FUNZIONI DI ACCESSO === */
     // Restituisce la root dell'albero
     virtual NodeType getRoot() const = 0 ;
     // Restituisce il genitore del nodo
-    virtual NodeType getParent(NodeType) const = 0 ;
+
+    //virtual NodeType getParent(NodeType) const { }; // TODO: metti = 0
+    
     // Restituisce il nodo a sinistra
     virtual NodeType getSx(NodeType) const = 0 ;
     // Restituisce il nodo a destra
@@ -41,7 +42,7 @@ public:
 
     /* === FUNZIONI DI LETTURA E SCRITTURA === */
     // Legge il valore di un nodo
-    virtual T read() const = 0;
+    virtual T read(NodeType) const = 0;
     // Scrive un valore in un nodo
     virtual void write(NodeType, T) = 0;
 
@@ -49,18 +50,18 @@ public:
     // Inserisce la radice
     virtual void insRoot(NodeType) = 0;
     // Inserisce figlio sinistro
-    virtual void insSx(NodeType) = 0;
+    virtual void insSx(NodeType, T val) = 0;
     // Inserisce figlio destro
-    virtual void insDx(NodeType) = 0;
+    virtual void insDx(NodeType, T val) = 0;
 
     /* === FUNZIONI DI STAMPA === */
     // Stampa l'albero
-    virtual void print() const;
+    virtual void toString() const = 0;
 
     /* === ALGORITMI DI VISITA */
-    virtual void previsita(NodeType);
-    virtual void invisita(NodeType);
-    virtual void postvisit(NodeType);
+    // virtual void previsita(NodeType) { };
+    // virtual void invisita(NodeType) { };
+    // virtual void postvisit(NodeType) { };
 };
 
 #endif // BINARY_TREE_H
