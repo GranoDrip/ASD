@@ -60,6 +60,7 @@ class HashTable: public Dictionary<K,T>{
     }
         */
 
+        // Inserimento di una coppia
         void insert(Pair<K,T>& pair) override{
 
             int index = hashFunction(pair.key) % divisor; // Trovo l'indice legato all'hash della chiave
@@ -83,6 +84,23 @@ class HashTable: public Dictionary<K,T>{
 
         }
 
+        // Modifica di un valore
+        void modify(const K& key, const T& e) override{
+            int index = hashFunction(key) % divisor;
+            int start = index;
+
+            do
+            {
+                if (table[index] != nullptr && table[index]->key == key){
+                    table[index]->value == e;
+                    return;
+                }
+
+                index = (index + 1) % divisor;
+            } while (index != start);
+            
+            
+        }
 
         // FUNZIONE DI STAMPA
         void toString()
@@ -102,6 +120,16 @@ class HashTable: public Dictionary<K,T>{
 
             std::cout << "]" << std::endl;           
         }
+
+        // Ritorna VERO se è vuota
+        bool isEmpty(){
+            return size==0;
+        }
+
+        // Ritorna numero di coppie
+        int getSize() const override{
+            return size;
+        } 
 
 };
 

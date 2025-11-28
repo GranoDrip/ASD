@@ -9,16 +9,23 @@ int main(){
     Pair<int,int> p1(1,1);
     Pair<int,int> p2(2,2);
     Pair<int,int> p3(3,3);
-    Pair<int,int> p4(1,4);
+    Pair<int,int> p4(4,3);
 
 
 
     ht.insert(p1);
     ht.insert(p2);
     ht.insert(p3);
-    ht.insert(p4); // Linear Probing
+    ht.insert(p4); 
     
     ht.toString();
+
+    ht.modify(4,4); 
+
+    ht.toString();
+
+
+    return 0;
 
 
 }
