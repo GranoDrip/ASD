@@ -16,6 +16,7 @@
 #define HASH_H
 
 #include <iostream>
+using namespace std;
 
 // Classe Astratta
 template<class K>
@@ -27,13 +28,27 @@ class Hash{
 template <>
 class Hash<int>{
     public:
-        size_t operator()(const int the_key) const{
+        size_t operator()(const int key) const{
             // Converte l'intero in size_t per ottenere un indice valido per la HashTable
-            return static_cast<size_t>(the_key);
+            return static_cast<size_t>(key);
         }
 };
 
-// TODO: Specializzazione per la string
+template <>
+class Hash<string>{
+    public:
+        size_t operator()(const string key) const{
+            
+            unsigned long hashVal = 0;
+            int keyLen = (int) key.length();
+            for (int i = 0; i < keyLen; i++)
+            {
+                hashVal = 5 * hashVal + key.at(i);
+            }
+            
+            return size_t(hashVal);
 
+        }
+};
 
 #endif

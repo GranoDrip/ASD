@@ -5,22 +5,16 @@
 
 int main(){
 
-    HashTable<int,int> ht(10);
-    Pair<int,int> p1(1,1);
-    Pair<int,int> p2(2,2);
-    Pair<int,int> p3(3,3);
-    Pair<int,int> p4(4,3);
-
+    HashTable<std::string,int> ht(10);
+    Pair<std::string,int> p1("Ciao",1);
+    Pair<std::string,int> p2("Prova",2);
 
 
     ht.insert(p1);
     ht.insert(p2);
-    ht.insert(p3);
-    ht.insert(p4); 
-    
+ 
     ht.toString();
 
-    ht.modify(4,4); 
 
     ht.toString();
 

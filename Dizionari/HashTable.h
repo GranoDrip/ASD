@@ -15,8 +15,6 @@
 #include <iostream>
 
 
-template<class T> class Hash;
-
 
 template <class K, class T>
 class HashTable: public Dictionary<K,T>{
@@ -27,6 +25,8 @@ class HashTable: public Dictionary<K,T>{
         int size; // Numero di coppie nella tabella
         int divisor; // Numero di bucket della tabella; usato per calcolare l'indice con l'hash
     
+        static Pair<K,T>* const DELETED;
+
     public:
        
         // Costruttore
@@ -63,25 +63,22 @@ class HashTable: public Dictionary<K,T>{
         // Inserimento di una coppia
         void insert(Pair<K,T>& pair) override{
 
-            int index = hashFunction(pair.key) % divisor; // Trovo l'indice legato all'hash della chiave
-
-            int start = index; // Uso start per indicare l'indice da cui sono partito, perche se faccio il linear probing ciclerà per tutta la table e potrei causare un loop
+            int index = hashFunction(pair.key) % divisor;
+            int start = index; 
             
-            while (table[index] != nullptr)
+            // Cerca il primo slot libero (nullptr o DELETED)
+            while (table[index] != nullptr && table[index] != DELETED)
             {
-                index = (index + 1) % divisor; // Vado al successivo indice
-                if (index == start) // Se sono tornato all'inizio allora è piena
+                index = (index + 1) % divisor; 
+                if (index == start) // Tabella piena
                 {
                     std::cout << "TABELLA PIENA" << std::endl;
                     return;
                 }
-                
             }
             
-            // Terminato il while assegno la coppia
-            table[index] = new Pair<K,T>(pair); // Creo il nuovo oggetto perche lo sto passando per riferimento, è meglio crearne uno di copia
+            table[index] = new Pair<K,T>(pair); 
             size++;
-
         }
 
         // Modifica di un valore
@@ -91,8 +88,8 @@ class HashTable: public Dictionary<K,T>{
 
             do
             {
-                if (table[index] != nullptr && table[index]->key == key){
-                    table[index]->value == e;
+                if (table[index] != DELETED && table[index]->key == key){
+                    table[index]->value = e;
                     return;
                 }
 
@@ -102,6 +99,58 @@ class HashTable: public Dictionary<K,T>{
             
         }
 
+        // Cancella una coppia con una determinata Chiave (IMPLEMENTAZIONE CON MARCATORE/TOMBSTONE)
+        void erase(const K& key) override {
+
+            int index = hashFunction(key) % divisor;
+
+            // 1. TROVA L'ELEMENTO: Scansione Lineare (Linear Probing)
+            // Continua a cercare finché non trova un bucket MAI USATO (nullptr).
+            // Se incontra DELETED, prosegue (lo "salta") per non interrompere la catena di collisione.
+            while (table[index] != nullptr) {
+                
+                // Se NON è il marcatore DELETED E la chiave corrisponde, abbiamo trovato l'elemento
+                if (table[index] != DELETED && table[index]->key == key) {
+                    
+                    // 2. CANCELLAZIONE FISICA e MARCATURA LOGICA
+                    
+                    // a) Libera la memoria dinamica dell'oggetto Pair
+                    delete table[index];
+                    
+                    // b) Sostituisce il puntatore con il marcatore di cancellazione (Tombstone)
+                    table[index] = DELETED; 
+                    
+                    size--;
+                    return; // Eliminazione completata
+                }
+
+                // Sposta all'indice successivo (linear probing)
+                index = (index + 1) % divisor;
+            }
+
+            // Se il loop termina, l'elemento non è stato trovato (raggiunto nullptr).
+        }
+
+        // Ricerca di un elemento data una chiave
+        Pair<K,T>* find(const K& key) const override {
+
+            int index = hashFunction(key) % divisor;
+
+            // Scansione lineare finché non trova un bucket nullptr (mai usato)
+            while (table[index] != nullptr) {
+                
+                // Se NON è il Tombstone DELETED e la chiave corrisponde
+                if (table[index] != DELETED && table[index]->key == key) {
+                    return table[index]; // Elemento trovato
+                }
+                
+                // Procede all'indice successivo (linear probing)
+                index = (index + 1) % divisor;
+            }
+            
+            return nullptr; // Elemento non trovato
+        }
+
         // FUNZIONE DI STAMPA
         void toString()
         {
@@ -109,10 +158,14 @@ class HashTable: public Dictionary<K,T>{
 
             for (int i = 0; i < divisor; ++i) {
                 
-                if (table[i] != nullptr)
+                if (table[i] == nullptr)
+                    std::cout << "-"; // Slot mai usato
+
+                else if (table[i] == DELETED)
+                    std::cout << "~"; // Slot cancellato (Tombstone)
+                
+                else // Elemento valido
                     std::cout << "(\"" << table[i]->key << "\"," << table[i]->value << ")";
-                else
-                    std::cout << "-";
             
                 if (i != divisor - 1)
                     std::cout << ",";
@@ -132,6 +185,25 @@ class HashTable: public Dictionary<K,T>{
         } 
 
 };
+
+
+/*
+ * DEFINIZIONE DEL MARCATORE DI CANCELLAZIONE (TOMBSTONE)
+ * --------------------------------------------------------
+ * Questo puntatore statico e costante funge da "pietra tombale" (Tombstone).
+ * Viene creato forzando la conversione del valore intero (-1) in un puntatore 
+ * (tramite reinterpret_cast). Questo garantisce che:
+ * 1. Non sia un indirizzo di memoria valido (non punta a un oggetto Pair reale).
+ * 2. Non sia nullptr (che in scansione lineare significa "fine della catena").
+ *
+ * FUNZIONAMENTO:
+ * - Quando un elemento viene cancellato, al suo posto viene messo DELETED.
+ * - La RICERCA (e l'ERASE) DEVE attraversare DELETED, continuando la scansione.
+ * - L'INSERIMENTO PUÒ riutilizzare un bucket marcato DELETED, trattandolo 
+ * come libero per l'inserimento di una nuova coppia.
+ */
+template<class K, class T>
+Pair<K,T>* const HashTable<K,T>::DELETED = reinterpret_cast<Pair<K,T>*>(-1);
 
 
 #endif
