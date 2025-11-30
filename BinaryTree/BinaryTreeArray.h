@@ -12,7 +12,6 @@
 #include "BinaryTree.h"
 
 // Trattandosi di una implementazione sequenziale definisco il massimo di elementi
-// Aumento a 33 per avere 32 posizioni utili, ignorando l'indice 0.
 #define MAX 33
 
 template <class T>
@@ -112,10 +111,10 @@ class BinaryTreeArray : public BinaryTree<T,int>{
         }
 
         // Inserisce il nodo a SX dato un indice
-        void insSx(int index, T val) override{
-            int child = 2 * index;
+        void insSx(int indexParent, T val) override{
+            int child = 2 * indexParent;
             // Controlla che il genitore sia valido e che il figlio non esista e sia in MAX
-            if (index >= 1 && index < MAX && valid[index] && child < MAX && !valid[child])
+            if (indexParent >= 1 && indexParent < MAX && valid[indexParent] && child < MAX && !valid[child])
             {
                 nodes[child] = val;
                 valid[child] = true;
@@ -124,10 +123,10 @@ class BinaryTreeArray : public BinaryTree<T,int>{
         }
 
         // Inserisce il nodo a DX dato un indice
-        void insDx(int index, T val) override{
-            int child = 2 * index + 1;
+        void insDx(int indexParent, T val) override{
+            int child = 2 * indexParent + 1;
             // Controlla che il genitore sia valido e che il figlio non esista e sia in MAX
-            if (index >= 1 && index < MAX && valid[index] && child < MAX && !valid[child])
+            if (indexParent >= 1 && indexParent < MAX && valid[indexParent] && child < MAX && !valid[child])
             {
                 nodes[child] = val;
                 valid[child] = true;
@@ -200,6 +199,53 @@ class BinaryTreeArray : public BinaryTree<T,int>{
             }
 
         } 
+
+        // Visita in preorder: R - S - D
+        void preOrder(int root) override{
+
+            // Passo Base
+            if (root < 1 || root >= MAX || !valid[root]) {
+                return;
+            }
+
+            // Visita
+            std::cout << nodes[root] << "-";
+
+            // Passo Induttivo
+            preOrder(root*2); // Passo a sinistra
+            // La sinistra è vuota allora vado a destra
+            preOrder(root*2+1);
+
+        }
+
+        // Visita inOrder: S-R-D
+        void inOrder(int root) override{
+
+            // Passo Base
+            if (root < 1 || root >= MAX || !valid[root]) {
+                return;
+            }
+
+            // Passo Induttivo
+            inOrder(root*2); // Passo a sinistra
+            std::cout << nodes[root] << "-"; // visito 
+            inOrder(root*2+1); // Destra
+        }
+
+        // Visita postOrder: S-D-R
+        void postOrder(int root) override{
+
+            // Passo Base
+            if (root < 1 || root >= MAX || !valid[root]) {
+                return;
+            }
+
+            // Passo Induttivo
+            postOrder(root*2); // Passo a sinistra
+            postOrder(root*2+1); // Destra
+            std::cout << nodes[root] << "-"; // visito 
+
+        }
 
     };   
 

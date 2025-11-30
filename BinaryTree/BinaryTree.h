@@ -9,6 +9,9 @@
 #ifndef BINARY_TREE_H
 #define BINARY_TREE_H
 
+// T: tipo di dato da inserire (char, int, string)
+// NodeType: Tipo di nodo dell'albero (int per array, ListNode per liste)
+
 template <class T, class NodeType>
 class BinaryTree {
 private:
@@ -18,27 +21,29 @@ private:
 public:
 
 
-    //==== ATTENZIONE QUI >>>> virtual void erase() { }; // Quando scrivo = 0, dico alle classi che ereditano che devono avere per forza quella funzione // TODO: METTI = 0
+    //==== ATTENZIONE QUI >>>> virtual void erase() { };
+    // Quando scrivo = 0, dico alle classi che ereditano che devono avere per forza quella funzione
+    // TODO: METTI = 0
 
     /* === FUNZIONI DI ACCESSO === */
     // Restituisce la root dell'albero
-    virtual NodeType getRoot() const = 0 ;
+    virtual NodeType getRoot() const = 0;
     // Restituisce il genitore del nodo
 
     //virtual NodeType getParent(NodeType) const { }; // TODO: metti = 0
     
     // Restituisce il nodo a sinistra
-    virtual NodeType getSx(NodeType) const = 0 ;
-    // Restituisce il nodo a destra
-    virtual NodeType getDx(NodeType) const = 0 ;
+    virtual NodeType getSx(NodeType) const = 0;
+    // Restituisce il nodo a destro
+    virtual NodeType getDx(NodeType) const = 0;
 
     /* === FUNZIONI DI CONTROLLO === */
     // Verifica se l'albero è vuoto
-    virtual bool isEmpty() const = 0 ;
+    virtual bool isEmpty() const = 0;
     // Controlla se il nodo a sinistra è vuoto
-    virtual bool sxEmpty(NodeType) const = 0 ;
+    virtual bool sxEmpty(NodeType) const = 0;
     // Controlla se il nodo a destra è vuoto
-    virtual bool dxEmpty(NodeType) const = 0 ;
+    virtual bool dxEmpty(NodeType) const = 0;
 
     /* === FUNZIONI DI LETTURA E SCRITTURA === */
     // Legge il valore di un nodo
@@ -48,7 +53,7 @@ public:
 
     /* === FUNZIONI DI INSERIMENTO === */
     // Inserisce la radice
-    virtual void insRoot(NodeType) = 0;
+    virtual void insRoot(T val) = 0;
     // Inserisce figlio sinistro
     virtual void insSx(NodeType, T val) = 0;
     // Inserisce figlio destro
@@ -59,9 +64,9 @@ public:
     virtual void toString() const = 0;
 
     /* === ALGORITMI DI VISITA */
-    // virtual void previsita(NodeType) { };
-    // virtual void invisita(NodeType) { };
-    // virtual void postvisit(NodeType) { };
+    virtual void preOrder(NodeType) = 0; // R S D
+    virtual void inOrder(NodeType) = 0; // D R S
+    virtual void postOrder(NodeType) = 0; // S D R
 };
 
 #endif // BINARY_TREE_H
