@@ -99,6 +99,14 @@ class BinaryTreeArray : public BinaryTree<T,int>{
             return -1;
         }            
 
+        int getParent(int nodeIndex) const override{
+            if (nodeIndex/2 > 1 && nodeIndex/2 < MAX && valid[nodeIndex/2])
+            {
+                return nodeIndex/2;
+            }
+
+            return 1;
+        }
 
         // Inserisce la Radice
         void insRoot(T val) override{
@@ -201,7 +209,7 @@ class BinaryTreeArray : public BinaryTree<T,int>{
         } 
 
         // Visita in preorder: R - S - D
-        void preOrder(int root) override{
+        void preOrder(int root) const override{
             // Passo Base
             if (root < 1 || root >= MAX || !valid[root]) {
                 return;
@@ -215,7 +223,7 @@ class BinaryTreeArray : public BinaryTree<T,int>{
         }
 
         // Visita inOrder: S-R-D
-        void inOrder(int root) override{
+        void inOrder(int root) const override{
 
             // Passo Base
             if (root < 1 || root >= MAX || !valid[root]) {
@@ -229,7 +237,7 @@ class BinaryTreeArray : public BinaryTree<T,int>{
         }
 
         // Visita postOrder: S-D-R
-        void postOrder(int root) override{
+        void postOrder(int root) const override{
 
             // Passo Base
             if (root < 1 || root >= MAX || !valid[root]) {

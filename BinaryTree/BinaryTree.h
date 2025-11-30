@@ -12,7 +12,7 @@
 // T: tipo di dato da inserire (char, int, string)
 // NodeType: Tipo di nodo dell'albero (int per array, ListNode per liste)
 
-template <class T, class NodeType>
+template <class DataType, class NodeType>
 class BinaryTree {
 private:
     // Stampa ricorsiva di un sottoalbero
@@ -29,13 +29,13 @@ public:
     // Restituisce la root dell'albero
     virtual NodeType getRoot() const = 0;
     // Restituisce il genitore del nodo
-
-    //virtual NodeType getParent(NodeType) const { }; // TODO: metti = 0
     
     // Restituisce il nodo a sinistra
     virtual NodeType getSx(NodeType) const = 0;
     // Restituisce il nodo a destro
     virtual NodeType getDx(NodeType) const = 0;
+    // Restituisce il genitore del nodo dato
+    virtual NodeType getParent(NodeType) const = 0;
 
     /* === FUNZIONI DI CONTROLLO === */
     // Verifica se l'albero è vuoto
@@ -47,26 +47,26 @@ public:
 
     /* === FUNZIONI DI LETTURA E SCRITTURA === */
     // Legge il valore di un nodo
-    virtual T read(NodeType) const = 0;
+    virtual DataType read(NodeType) const = 0;
     // Scrive un valore in un nodo
-    virtual void write(NodeType, T) = 0;
+    virtual void write(NodeType, DataType) = 0;
 
     /* === FUNZIONI DI INSERIMENTO === */
     // Inserisce la radice
-    virtual void insRoot(T val) = 0;
+    virtual void insRoot(DataType) = 0;
     // Inserisce figlio sinistro
-    virtual void insSx(NodeType, T val) = 0;
+    virtual void insSx(NodeType, DataType) = 0;
     // Inserisce figlio destro
-    virtual void insDx(NodeType, T val) = 0;
+    virtual void insDx(NodeType, DataType) = 0;
 
     /* === FUNZIONI DI STAMPA === */
     // Stampa l'albero
     virtual void toString() const = 0;
 
     /* === ALGORITMI DI VISITA */
-    virtual void preOrder(NodeType) = 0; // R S D
-    virtual void inOrder(NodeType) = 0; // D R S
-    virtual void postOrder(NodeType) = 0; // S D R
+    virtual void preOrder(NodeType) const = 0; // R S D
+    virtual void inOrder(NodeType) const = 0; // D R S
+    virtual void postOrder(NodeType) const = 0; // S D R
 };
 
 #endif // BINARY_TREE_H

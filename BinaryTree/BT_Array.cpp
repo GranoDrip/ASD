@@ -3,14 +3,12 @@
 
 /* IN QUESTO FILE TESTIAMO L'INSERIMENTO E LA STAMPA DEL SEGUENTE ALBERO
 
-                                    1
-                                   / \
-                                  2   3
-                                 /\   /\
-                                4  5 6  7
+                                      H
+                                 A         C
+                               D   L     P   S
+                                 O   Q
 
 La stampa usa la versione [valore, sinistro, destro]
-Il risultato che ci aspettiamo ( dalla stampa ) è [1, [2, [4, NIL, NIL], [5, NIL, NIL]], [3, [6, NIL, NIL], [7, NIL, NIL]]]
 
 */
 
@@ -45,6 +43,9 @@ tree.insRoot('h');
     std::cout << "\n\n" << std::endl;
     std::cout << "postOrder:" << std::endl;
     tree.postOrder(1);
+
+    std::cout << "\n\n" << std::endl;
+    std::cout<< tree.read(tree.getParent(4));
 
     return 0;
 }
