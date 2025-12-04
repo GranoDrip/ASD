@@ -45,6 +45,15 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
             root = nullptr;
         }
 
+        
+        ~BinaryTreeList(){
+            // Per la cancellazione dell'albero uso il POST ORDER ricorsivo 
+            
+            postOrderDistruttore(root);
+
+            root = nullptr;
+        
+        }
 
 
         //  == Inserimento ==
@@ -224,13 +233,26 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
             std::cout << root->val << "-";
      
         }
+
+        // PostOrder usato come distruttore
+        void postOrderDistruttore(TreeNode<T>* root){
+            if (root == nullptr)
+            {
+                return;
+            }
+
+            postOrderDistruttore(root->sx);
+            postOrderDistruttore(root->dx);
+            
+            delete root;
+        }
+        
         
         // Breath First Search
         /* 
            Serve a trovare la profondità minima per cercare qualcosa
            Generare la vista dell'albero livello per livello
         */
-
         void BFS(TreeNode<T>* root) const{
             
             /* La BFS ha bisogno di una CODA perchè c'è bisogno di tenere
