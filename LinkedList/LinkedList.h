@@ -320,6 +320,22 @@ class LinkedList{
             }            
         }
 
+        // Ritorna il valore ad un indice
+        T getAt(int index){
+            ListNode<T> * curr = head;
+            int i = 0;
+
+            if (!isEmpty()){
+                while (curr->next != nullptr && i < index)
+                {
+                    curr = curr->next;
+                    i++;
+                }                
+            }
+
+            return curr->val;
+        }
+
         /*
             === FUNZIONI DI UTILITÀ ===
         
@@ -436,6 +452,21 @@ class LinkedList{
 
             left->head = head;
             right->head = slow;
+
+        }
+
+        int size(){
+
+            ListNode<T> * curr = head;
+            int c = 0;
+
+            while (curr != nullptr)
+            {
+                curr = curr->next;
+                c++;
+            }
+
+            return c;            
 
         }
 

@@ -11,13 +11,8 @@ int main(){
     l1.pushFront(110);
     l1.pushFront(30);
 
-    l1.toString();
+    std::cout << l1.size() << std::endl;
 
-    int index = l1.searchElement(10);
-
-    std::cout << index << std::endl;
-
-    l1.changeAt(31,index);
 
     l1.toString();
 
