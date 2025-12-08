@@ -14,6 +14,8 @@
 #define NT_FCNS_H
 
 #include "N_aryTree.h"
+#include "../../Queue/Queue.h"
+#include <iostream>
 
 // Classe Nodo per l'albero n-ario
 
@@ -36,7 +38,7 @@ class TreeNode {
 };
 
 template <class DataType>
-class NT_FCNS:public NaryTree<DataType,TreeNode<DataType>*>
+class NaryTree_FCNS:public NaryTree<DataType,TreeNode<DataType>*>
 {
     private:
         TreeNode<DataType>* root;
@@ -81,8 +83,9 @@ class NT_FCNS:public NaryTree<DataType,TreeNode<DataType>*>
             if (node != nullptr)
             {
                 return node->data;
+            }else{
+                return DataType{ };            
             }
-            return nullptr;            
         }
 
         // === INSERIMENTO ===
@@ -94,12 +97,13 @@ class NT_FCNS:public NaryTree<DataType,TreeNode<DataType>*>
             root->data = val;
         }
 
-        void insertChild(TreeNode<DataType> parent, DataType value) override{
-            if (parent != nullptr)
+        void insertChild(TreeNode<DataType>* root, DataType value) override {
+            if (root != nullptr)
             {
                 // Inizializzazione del nuovo figlio
                 TreeNode<DataType>* newChild = new TreeNode<DataType>();
                 newChild->data = value;
+                newChild->parent = root;
 
                 /**
                  * Adesso devo inserire il nodo, ci sono due casi:
@@ -107,27 +111,22 @@ class NT_FCNS:public NaryTree<DataType,TreeNode<DataType>*>
                  * 2) Il primo figlio esiste -> Devo inserirlo come fratello, chiamo insertSibling
                  */
 
-                if (parent->firstChild == nullptr)
+                if (root->firstChild == nullptr)
                 {
-                   parent->firstChild = newChild;
-                }else{
+                   root->firstChild = newChild;
+                } else {
                     // Devo inserirlo come ultimo fratello
-                    // Quindi ciclo tra i fratelli
-                    TreeNode<DataType> lastChild = parent->firstChild;
-                    while (lastChild != nullptr)
+                    TreeNode<DataType>* lastChild = root->firstChild;
+                    while (lastChild->nextSibling != nullptr)
                     {
                         lastChild = lastChild->nextSibling;
                     }
-                    // Se sono uscito dal loop vuol dire che sono arrivato alla fine dei figli
-                    // Quindi chiamo insertSibling() per inserirlo come fratello ( Riuso del codice )
-                    insertSibling(newChild,value);
-                    delete newChild; // Non mi serve piu perche insertSibling ne crea uno nuovo                     
+                    // Inserisco come fratello
+                    insertSibling(lastChild, value);
+                    delete newChild; // Non mi serve più perché insertSibling ne crea uno nuovo                     
                 }
-                 
             }
-
             return;
-            
         }
 
         void insertSibling(TreeNode<DataType>* lastSibling, DataType value) override{
@@ -146,6 +145,114 @@ class NT_FCNS:public NaryTree<DataType,TreeNode<DataType>*>
                 node->data = newVal;
             }
             
+        }
+
+        // == ELIMINAZIONE ==
+        // Utilizzo l'eliminazione con il postOrder
+        void eraseSubtree(TreeNode<DataType>* node) override{
+            // Passo Base
+            if (node == nullptr)
+            {
+                return;
+            }
+
+            // Cancello ricorsivamente tutti i figli
+            eraseSubtree(node->firstChild);
+            // Al termine della chiamata ricorsiva cancello ricorsivamente tutti i fratelli
+            eraseSubtree(node->nextSibling);
+            delete node;            
+        }
+
+        // === CONTROLLI ===
+        bool isEmpty() const override {
+                return root == nullptr;
+            }
+
+        bool isLeaf(TreeNode<DataType>* node) const override {
+                if (node == nullptr) return false;
+                return node->firstChild == nullptr;
+            }
+
+        bool isLastSibling(TreeNode<DataType>* node) const override {
+                if (node == nullptr) return false;
+                return node->nextSibling == nullptr;
+            }        
+
+        // === ALGORITMI DI VISITA ===
+        /**
+         * La visita in  PREORDER negli alberi n-ari prevede l'ordine di visita con:
+         * Radice -> Figli -> Fratelli
+         * Implementazione ricorsiva
+         */
+        void preOrder(TreeNode<DataType>* node) const override{
+
+            // Passo Base
+            if (node != nullptr)
+            {
+                // Visito la radice
+                std::cout << node->data << " - ";
+                // Passo ai figli
+                preOrder(node->firstChild);
+                // Fratelli
+                preOrder(node->nextSibling);
+            }
+
+                        
+        }
+
+        // VISITA IN POST ORDER: FIGLI -> FRATELLI -> RADICE ( Motivo per cui lo uso per eliminare i subtree)
+        void postOrder(TreeNode<DataType>* node) const override{
+                // Passo Base
+                if (node != nullptr)
+                {
+                    // Passo ai figli
+                    preOrder(node->firstChild);
+
+                    // Fratelli
+                    preOrder(node->nextSibling);
+
+                    // Visito
+                    std::cout << node->data << " - ";
+
+                }
+        }
+
+        // Breath First Search
+        /**
+         * L'algoritmo BFS esplora l'albero n-ario livello per livello.
+         *
+         * 1.Inizia dalla radice (livello 0).
+         * 2.Visita tutti i nodi al livello attuale (es. tutti i figli della radice, livello 1).
+         * 3.Passa poi al livello successivo (livello 2) e ripete il processo.
+         *
+         * Principio: Utilizza una CODA FIFO per mantenere traccia dei nodi da visitare,
+         * garantendo che un nodo non sia visitato finché tutti i suoi fratelli e tutti i nodi
+         * dei livelli precedenti non siano stati esaminati.
+         */
+        void bfs(TreeNode<DataType>* node) const override{
+
+            Queue<TreeNode<DataType>*> q;
+
+            // Inizio dalla radice (1)
+            q.enqueue(node);
+
+            while (!q.isEmpty())
+            {
+                TreeNode<DataType>* current = q.dequeue();
+
+                // (2) Visito il livello attuale
+                std::cout << current->data << " ";
+
+                // (3) Aggiungo alla coda tutti i figli del nodo
+                TreeNode<DataType>* child = current->firstChild;
+                while (child != nullptr) {
+                    q.enqueue(child);
+                    child = child->nextSibling;
+                }
+
+            }
+            
+
         }
 };
 

@@ -12,8 +12,8 @@
 #include "TreeNode.h"
 #include "BinaryTree.h"
 
-#include "../Stack/Stack.h"
-#include "../Queue/Queue.h"
+#include "../../Stack/Stack.h"
+#include "../../Queue/Queue.h"
 
 template <class T>
 class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{

@@ -51,10 +51,10 @@ public:
     virtual void setRoot(DataType value) = 0;
 
     // Inserimento di un figlio partendo dalla radice ( o radice del sotto-albero)
-    virtual void insertChild(NodeType root,DataType value) = 0;
+    virtual void insertChild(NodeType root, DataType value) = 0;
 
     // Inserimento di un fratello
-    virtual void insertSibiling(NodeType prevSibling, DataType value) = 0;
+    virtual void insertSibling(NodeType prevSibling, DataType value) = 0;
 
 
     // === MODIFICA ===
@@ -80,9 +80,10 @@ public:
 
     // Metodi di ATTRAVERSAMENTO
 
-    virtual void preOrder(NodeType) const = 0; // R S D
-    virtual void inOrder(NodeType) const = 0; // D R S
-    virtual void postOrder(NodeType) const = 0; // S D R
+    virtual void preOrder(NodeType) const = 0; // R -> FIGLI -> FRATELLI
+    virtual void postOrder(NodeType) const = 0; // FIGLI -> FRATELLI -> RADICE
+    // virtual void inOrder(NodeType) const; // DA VEDERE MEGLIO
+
 
     // Breath First Search
     virtual void bfs(NodeType) const = 0;
