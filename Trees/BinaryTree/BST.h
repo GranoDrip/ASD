@@ -44,7 +44,11 @@ class BST: public BinaryTreeList<T>{
 
     public:
         BST(){
-            this->root = nullptr;
+            /**
+             * Visto che eredito dà BinaryTreeList.h i metodi
+             * Uso This->root che punta all'oggetto BinaryTreeList
+             */
+            this->root = nullptr; 
         }
 
         // Inserisce un nodo nell'albero
