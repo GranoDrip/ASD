@@ -10,9 +10,10 @@ int main() {
     tree.insert(40);
     tree.insert(15);
 
-    tree.inOrder(tree.getRoot());
+    tree.inOrder(tree.getRoot()); // DFS
     std::cout << std::endl;
     std::cout << tree.getMin(tree.getRoot())->val << std::endl;
+    std::cout << std::endl;
     std::cout << tree.getMax(tree.getRoot())->val << std::endl;
 
     return 0;
