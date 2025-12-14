@@ -123,6 +123,9 @@ class PriorityQueue{
             std::cout << "]" << std::endl;
         }
     
+        bool isEmpty(){
+            return ultimo == 0;
+        }
 
 };
 
