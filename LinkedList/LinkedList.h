@@ -292,10 +292,10 @@ class LinkedList{
             {
                 while (j != nullptr)
                 {
-                    if (i->val > j->val);
-                    tmp = i->val;
-                    i->val = j->val;
-                    j->val = tmp;
+                    if (i->val > j->val)
+                        tmp = i->val;
+                        i->val = j->val;
+                        j->val = tmp;
 
                     j = j->next;
                 }
