@@ -55,38 +55,38 @@ class Grafo{
         virtual LinkedList<N*> getAdjacentNodes(N node) const = 0; 
 
         // Restituisce il valore del nodo corrente
-        virtual E getNodeLabel(N node) const = 0; 
-
-        // Restituisce il peso dell'arco
-        virtual P getEdgeWeight(N node1, N node2) const = 0; 
+//        virtual E getNodeLabel(N node) const = 0; 
+//
+//        // Restituisce il peso dell'arco
+//        virtual P getEdgeWeight(N node1, N node2) const = 0; 
 
         // --- Setters ---
         // Imposta il valore dell'etichetta
-        virtual void setNodeLabel(N node, E label) = 0; 
+//        virtual void setNodeLabel(N node, E label) = 0; 
 
         // Imposta il peso dell'arco
-        virtual void setEdgeWeight(N node1, N node2, P weight) = 0; 
+//        virtual void setEdgeWeight(N node1, N node2, P weight) = 0; 
 
         // --- Modifica struttura ---
         // Inserisce un Nodo
-        virtual void insertNode(N& node) = 0; 
+        virtual void insertNode(N& node, E label = E()) = 0; 
 
         // Rimuove un Nodo
-        virtual void removeNode(N node) = 0; 
-
-        // Inserisce un arco
+//        virtual void removeNode(N node) = 0; 
+//
+//        // Inserisce un arco
         virtual void insertEdge(N from, N to, P weight) = 0; 
-        
-        // Rimuove un arco
-        virtual void removeEdge(N node1, N node2) = 0; 
-
-
-        // --- Utility / opzionali ---
-        // virtual bool existsNode(N node) const = 0;
-        // virtual bool existsEdge(N node1, N node2) const = 0;
-
-        // --- Distruttore ---
-        virtual ~Grafo() {};
+//        
+//        // Rimuove un arco
+//        virtual void removeEdge(N node1, N node2) = 0; 
+//
+//
+//        // --- Utility / opzionali ---
+//        // virtual bool existsNode(N node) const = 0;
+//        // virtual bool existsEdge(N node1, N node2) const = 0;
+//
+//        // --- Distruttore ---
+//        virtual ~Grafo() {};
 
 
 
