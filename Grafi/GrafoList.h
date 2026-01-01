@@ -124,6 +124,32 @@ class GraphList: public Grafo<E,P,GraphNode>{
             return nNodi == 0;
         }
 
+        bool existsNode(GraphNode node) const override{
+            int id = node.getGraphNodeId();
+
+            return (id >= 0 && id < maxNodi && !nodi[id].vuoto);
+        }
+
+        bool existsEdge(GraphNode from, GraphNode to) const override{
+            int idFrom = from.getGraphNodeId();
+            int idTo = to.getGraphNodeId();
+
+            if (!existsNode(from) || !existsNode(to)) {
+                return false;
+            }
+
+            int numArchi = nodi[idFrom].archi.size();
+            for (int i = 0; i < numArchi; i++)
+            {
+                if (nodi[idFrom].archi.getAt(i).to.getGraphNodeId() == idTo) // Se trovo un arco che punta alla destinazione allora ritorno T
+                { 
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         // Numero di nodi
         int getNumNodes() const override{
             return nNodi;
@@ -304,7 +330,56 @@ class GraphList: public Grafo<E,P,GraphNode>{
             }
         }
 
+        void removeEdge(GraphNode n1, GraphNode n2){
+            int fromNodeId = n1.getGraphNodeId();
+            int toNodeId = n2.getGraphNodeId();
 
+            if (fromNodeId < 0 || fromNodeId >= maxNodi || nodi[fromNodeId].vuoto)
+            {
+                return;
+            }
+            
+
+            int numArchi = nodi[fromNodeId].archi.size(); // Numero totale di archi collegati al nodo 1
+            for (int i = 0; i < numArchi; i++){
+                // Acquisisco il nodo di arrivo prendendo l'arco
+                InfoArco<P> arco =  nodi[fromNodeId].archi.getAt(i);
+                if (arco.to.getGraphNodeId() == toNodeId)
+                {
+                    nodi[fromNodeId].archi.removeAt(i);
+                    nArchi--;
+
+                    return;
+                }
+            }
+        }
+
+        void removeNode(GraphNode node) override {
+
+            if (!existsNode(node))
+            {
+                return;
+            }
+
+            int idToRemove = node.getGraphNodeId();
+
+            // Rimuovo gli archi uscenti 
+            nArchi -= nodi[idToRemove].archi.size();
+            nodi[idToRemove].archi = LinkedList<InfoArco<P>>();
+
+            // Rimuovo gli archi entranti
+            for (int i = 0; i < maxNodi ; i++){
+                if (!nodi[i].vuoto && i != idToRemove)
+                {
+                    removeEdge(GraphNode(i),node);
+                }
+                
+            }
+
+            nodi[idToRemove].vuoto = true;
+            nNodi--;
+        }
+ 
 
     };
 

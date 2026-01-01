@@ -72,18 +72,18 @@ class Grafo{
         virtual void insertNode(N& node, E label = E()) = 0; 
 
         // Rimuove un Nodo
-//        virtual void removeNode(N node) = 0; 
-//
-//        // Inserisce un arco
+        virtual void removeNode(N node) = 0; 
+
+        // Inserisce un arco
         virtual void insertEdge(N from, N to, P weight) = 0; 
-//        
-//        // Rimuove un arco
-//        virtual void removeEdge(N node1, N node2) = 0; 
+        
+        // Rimuove un arco
+        virtual void removeEdge(N node1, N node2) = 0; 
 //
 //
-//        // --- Utility / opzionali ---
-//        // virtual bool existsNode(N node) const = 0;
-//        // virtual bool existsEdge(N node1, N node2) const = 0;
+        // --- Utility / opzionali ---
+        virtual bool existsNode(N node) const = 0;
+        virtual bool existsEdge(N node1, N node2) const = 0;
 //
 //        // --- Distruttore ---
 //        virtual ~Grafo() {};
