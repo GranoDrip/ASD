@@ -55,6 +55,30 @@ public:
         top = node;
         
     } 
+
+    // Cancellami
+    // pushNoDuplicati
+    void pushUnique(T e){
+        Stack<T> appoggio;
+
+        while (!isEmpty()){
+            T currTop = getTop();
+            pop();
+
+            if (currTop != e){
+                appoggio.push(currTop);
+            } 
+        }
+
+        // Ripristina la pila dalla pila di appoggio
+        while (!appoggio.isEmpty()){
+            T currTop = appoggio.getTop();
+            appoggio.pop();
+            push(currTop);
+        }
+
+        push(e);
+    }
     
     /* == FUNZIONE POP ==
         Rimuove e ritorna il nodo in cima alla Pila

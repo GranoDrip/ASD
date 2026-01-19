@@ -89,6 +89,43 @@ class NaryTree_FCNS:public NaryTree<DataType,TreeNode<DataType>*>
             }
         }
 
+        int getWidth() const override{
+            int w = 0;
+            Queue<TreeNode<DataType>*> q;
+            TreeNode<DataType>* child;
+            TreeNode<DataType>* current; 
+
+            // Inizio dalla radice
+            q.enqueue(root);
+
+            while (!q.isEmpty())
+            {
+                int levelLen = q.getSize(); // Prendo la lunghezza del livello in cui mi trovo
+                w = std::max(w,levelLen); // Trovo il massimo
+
+                // Ma ora ho bisogno di trovare gli altri figli 
+                for (int i = 0; i < levelLen; i++)
+                {
+                    current = q.dequeue();
+                    
+                    // Adesso metto i figli nella coda
+                    child = current->firstChild;
+                    while (child != nullptr)
+                    {
+                        q.enqueue(child);
+                        child = child->nextSibling;
+                    }
+                }
+                
+            }
+
+            return w;
+        }
+
+        int getDepth() const override {
+            return int();
+        }
+
         // === INSERIMENTO ===
 
         void setRoot(DataType val) override{             

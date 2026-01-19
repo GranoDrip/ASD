@@ -36,13 +36,17 @@ public:
     // Ritorna il valore di un nodo 
     virtual DataType getValue(NodeType node) const = 0;
 
-    // GetHeight
-    // GetDepth
-    // getDegree
+    // getWitdth
+    // Numero massimo di nodi ad ogni livello
+    virtual int getWidth() const = 0;
 
+    // getDepth
+    /** PROFONDITA' DEFINIZIONE:
+     * Il numero di nodi che ci sono tra l'albero e il nodo piu un basso
+     */
+    virtual int getDepth() const = 0;
 
     // Search
-
 
 
     // == INSERIMENTO ==
@@ -84,9 +88,9 @@ public:
     virtual void postOrder(NodeType) const = 0; // FIGLI -> FRATELLI -> RADICE
     // virtual void inOrder(NodeType) const; // DA VEDERE MEGLIO
 
-
     // Breath First Search
     virtual void bfs(NodeType) const = 0;
+
 
 };
 
