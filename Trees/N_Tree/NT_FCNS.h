@@ -122,11 +122,29 @@ class NaryTree_FCNS:public NaryTree<DataType,TreeNode<DataType>*>
             return w;
         }
 
-        int getDepth() const override {
-            return int();
+        int getDepth(TreeNode<DataType>* node) const {
+            
+            int d = 0; // Depth
+
+            if (node == nullptr)
+            {
+                return 0;
+            }
+
+            TreeNode<DataType>* child = node->firstChild;
+
+            while (child != nullptr)
+            {
+                d = std::max(d,getDepth(child));
+                child = child->nextSibling;
+            }
+            
+            return 1 + d;
+
         }
 
         // === INSERIMENTO ===
+        
 
         void setRoot(DataType val) override{             
             // Si assume che l'albero sia vuoto, se si vuole cambiare cambiare il contenuto
