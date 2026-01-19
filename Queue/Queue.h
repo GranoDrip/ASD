@@ -28,10 +28,12 @@ private:
 
     QNode<T> * first = nullptr;
     QNode<T> * last = nullptr;
+    int size = 0;
 
 public:
     Queue(){
         first = last = nullptr;
+        size = 0;
     }
 
     ~Queue(){
@@ -54,6 +56,8 @@ public:
             last->next = node;
             last = node;
         }
+
+        size++;
     }
 
     // Rimuove l'elemento in testa alla coda
@@ -71,6 +75,8 @@ public:
             last = nullptr;
         }
         
+        size--;
+
         delete temp;
         return dato;
     }
@@ -83,6 +89,10 @@ public:
             return first->val;   
 
         } 
+    }
+
+    int getSize(){
+        return size;
     }
 
     // Controlla se è vuota

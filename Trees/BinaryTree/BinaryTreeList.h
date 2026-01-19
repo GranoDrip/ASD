@@ -1,4 +1,3 @@
-
 /* 
 
     ALBERI BINARI IMPLEMENTATI CON LISTA LINKATA
@@ -35,6 +34,31 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
             // Figlio destro
             printSubTree(tn->dx);
             std::cout << "]";
+
+        }
+
+        // CANCELLAMI 
+        // privateRemoveEvenLeaf: Cancella le foglie pari, con visita postOrder (S,D,R)
+        void privateRemoveEvenLeaf(TreeNode<T>* &root){
+
+            // Passo Base
+            if (root == nullptr)
+            {
+                return;
+            }
+
+            // Passo Ricorsivo
+            privateRemoveEvenLeaf(root->sx);
+            privateRemoveEvenLeaf(root->dx);
+
+            if (isLeaf(root))
+            {
+                if (root->val % 2 == 0) // LA FOGLIA HA VALORE PARI
+                {                   
+                    delete root;
+                    root = nullptr;
+                }
+            }
 
         }
 
@@ -191,11 +215,12 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
         
         // Algoritmi di visita 
         // Algoritmo di visita PRE-ORDER ( In profondità ) versione iterativa
-        // Con uso di uno STACK 
+        // Con uso di uno STACK -- ROOT , SINISTRA , DESTRA
         void preOrder(TreeNode<T>* root) const override{
 
             Stack<TreeNode<T>*> stack; 
 
+            // L'albero è vuoto
             if (root == nullptr)
             {
                 return;
@@ -205,8 +230,8 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
 
             while (!stack.isEmpty())
             {
-                root = stack.pop();
-                std::cout << root->val << "-";
+                root = stack.pop(); // Radice del sottoalbero
+                // std::cout << root->val << "-"; // Visita
                 if (!dxEmpty(root))
                 {
                     stack.push(root->dx);
@@ -243,7 +268,7 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
 
             postOrder(root->sx);
             postOrder(root->dx);
-            std::cout << root->val << "-";
+            std::cout << root->val << "-"; // Visita
      
         }
 
@@ -306,7 +331,96 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
 
             }           
         }
-    };
 
+        // isLeaf: Verifica che il nodo passato sia una foglia
+        bool isLeaf(TreeNode<T>* node) const{
+            if (node->dx == nullptr && node->sx == nullptr)
+            {
+                return true;
+            }
+
+            return false;
+            
+        }
+
+        // Cancellami
+        void removeEvenLeaf(){
+            privateRemoveEvenLeaf(this->root);
+        }
+
+        //Cancellami
+        // Calcola e restituisce n di foglie verdi (Esercizio)
+        // Uso il PostOrder S D R
+        int greenLeafs(TreeNode<T>* r){
+
+            // Passo Base
+            if (r == nullptr)
+            {
+                return 0;
+            }
+            
+            // Passo Induttivo
+            int fs = greenLeafs(r->sx); // Foglie a sinistra
+            int fd = greenLeafs(r->dx); // Foglie a destra
+
+            int i = 0;
+
+            if (isLeaf(r) && r->val == "Green")
+            {
+                i = 1;  
+            }
+
+            return i+fs+fd;
+
+        }
+
+
+        // Cancellami
+        // Calcola e restituisce il numero di nodi di livello pari il cui valore è "rosso" e
+        // che hanno almeno un figlio il cui valore è "bianco"
+        int levelRed(TreeNode<T> * r){
+            
+            Queue<TreeNode<T>*> coda;
+            coda.enqueue(r);
+
+            int l = 0; // Livello Corrente
+            int c = 0; // Numero di nodi che rispettano la condizione
+
+            while (!coda.isEmpty())
+            {
+                int nodiLiv = coda.getSize();
+
+                for (int i = 0; i < nodiLiv; i++)
+                {
+                    TreeNode<T> * curr = coda.dequeue();
+
+                    if (l % 2 == 0 && curr->val == "Red")
+                    {
+                        if ((!sxEmpty(curr) && getSx(curr)->val == "White") || (!dxEmpty(curr) && getDx(curr)->val == "White"))
+                        {
+                            c++;
+                        }
+                        
+                    }
+                    
+                    if (!sxEmpty(curr))
+                    {
+                        coda.enqueue(curr->sx);
+                    }
+                    if (!dxEmpty(curr))
+                    {
+                        coda.enqueue(curr->dx);
+                    }
+                    
+                }
+                
+                l++;
+            }
+
+            return c;
+
+        }
+
+    };
 
 #endif
