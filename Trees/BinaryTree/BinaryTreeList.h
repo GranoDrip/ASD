@@ -1,6 +1,6 @@
 /* 
 
-    ALBERI BINARI IMPLEMENTATI CON LISTA LINKATA
+    ALBERI BINARI IMPLEMENTATI CON LINKED LIST
 
 */
 
@@ -51,6 +51,7 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
             privateRemoveEvenLeaf(root->sx);
             privateRemoveEvenLeaf(root->dx);
 
+            // Visita
             if (isLeaf(root))
             {
                 if (root->val % 2 == 0) // LA FOGLIA HA VALORE PARI
@@ -69,7 +70,6 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
             root = nullptr;
         }
 
-        
         ~BinaryTreeList(){
             // Per la cancellazione dell'albero uso il POST ORDER ricorsivo 
             
@@ -79,7 +79,7 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
         
         }
 
-        // Cancellazione di un sotto-albero
+        // Cancellazione di un sotto-albero usando un PostOrder
         void erase(TreeNode<T>* &root){
             // Passo Base
             if (root == nullptr) {
@@ -95,6 +95,7 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
 
         //  == Inserimento ==
 
+        // Inserimento della radice
         void insRoot(T e) override {
             if (isEmpty())
             {
@@ -103,6 +104,7 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
             
         }
 
+        // Inserimento a Destra
         void insDx(TreeNode<T>* tn, T e) override{
             
             TreeNode<T> * node = new TreeNode<T>();
@@ -116,6 +118,7 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
             
         }
 
+        // Inserimento a sinistra
         void insSx(TreeNode<T>* tn, T e) override {
             
             TreeNode<T>* node = new TreeNode<T>();
@@ -131,6 +134,7 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
 
         // == Getters ==
 
+        // Ritorna la Radice
         TreeNode<T>* getRoot() const override{
             if (!isEmpty())
             {
@@ -141,6 +145,7 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
             
         }
 
+        // Ritorna il nodo di sinistra
         TreeNode<T>* getSx(TreeNode<T>* tn) const override{
             if (!sxEmpty(tn))
             {
@@ -150,6 +155,7 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
             return nullptr;
         }
 
+        // Ritorna il nodo di destra
         TreeNode<T>* getDx(TreeNode<T>* tn) const override{
             if (!dxEmpty(tn))
             {
@@ -159,6 +165,7 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
             return nullptr;
         }
 
+        // Ritorna il genitore
         TreeNode<T>* getParent(TreeNode<T>* tn) const override{
             if (tn != root)
             {
@@ -168,15 +175,23 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
             return nullptr;
         }
         
+        // Ritorna la PROFONDITA
+
+        // Ritorna l'ALTEZZA
+
+
         // Lettura e Modifica
+
+        // Legge un valore
         T read(TreeNode<T>* tn) const override{
             if (tn != nullptr)
             {
                 return tn->val;
             }
-            return T { }; // Possiamo anche creare un Exeption
+            return T { };
         }
 
+        // Sovrascrive un nodo 
         void write(TreeNode<T>* tn, T e) override{
             if (tn != nullptr)
             {
@@ -190,10 +205,12 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
             return root == nullptr;
         }
 
+        // Controlla se il Nodo Sinistro è vuoto
         bool sxEmpty(TreeNode<T>* tn) const override{
             return tn->sx == nullptr;
         }
 
+        // Verifica se il Nodo Destro è vuoto
         bool dxEmpty(TreeNode<T>* tn) const override{
             return tn->dx == nullptr;
         }
@@ -343,12 +360,12 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
             
         }
 
-        // Cancellami
+        // TODO: Cancellami
         void removeEvenLeaf(){
             privateRemoveEvenLeaf(this->root);
         }
 
-        //Cancellami
+        // TODO: Cancellami
         // Calcola e restituisce n di foglie verdi (Esercizio)
         // Uso il PostOrder S D R
         int greenLeafs(TreeNode<T>* r){
@@ -375,7 +392,7 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
         }
 
 
-        // Cancellami
+        // TODO: Cancellami
         // Calcola e restituisce il numero di nodi di livello pari il cui valore è "rosso" e
         // che hanno almeno un figlio il cui valore è "bianco"
         int levelRed(TreeNode<T> * r){
