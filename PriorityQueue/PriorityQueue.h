@@ -88,19 +88,29 @@ class PriorityQueue{
         };
 
         void inserisci(T element){
-            assert(ultimo < MAXLEN);
+            if (ultimo >= MAXLEN) {
+                std::cout << "ERRORE LA CODA E' PIENA " << element << std::endl;
+                return; // Esco
+            }
             ultimo++;
             heap[ultimo - 1] = element; // inserisci in heap[ultimo-1] (base 0)
             fixUp();
         };
 
-        T min(){
-            assert(ultimo != 0);
-            return heap[0]; // il minimo è sempre in heap[0] (base 0)
+        T min() {
+            if (ultimo == 0) {
+                std::cout << "ERRORE: CODA VUOTA" << std::endl;
+                return T(); 
+            }
+        
+            return heap[0]; // Il minimo è nella radice (indice 0)
         }
 
         void cancellaMin (){
-            assert(ultimo != 0);
+            if (ultimo == 0) {
+                std::cout << "ERRORE: CODA VUOTA" << std::endl;
+                return T(); 
+            }
             heap[0] = heap[ultimo - 1]; // sposta l'ultimo in cima
             ultimo--;
             fixDown(1, ultimo); // fixDown parte da 1 (base 1)
