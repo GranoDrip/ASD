@@ -4,37 +4,66 @@
 
 int main() {
 
-    GrafoMatrix<char, int> grafo(5);
+    GrafoMatrix<char, int> grafo(10);
     int cost = 0;
-    
-    NodoGrafo a(0), b(1), c(2), d(3);
 
-    // 3. Inseriamo i nodi con etichette
+    // Nodi
+    NodoGrafo a(0), b(1), c(2), d(3), e(4),
+              f(5), g(6), h(7), i(8);
+
+    // Inserimento nodi
     grafo.insertNode(a, 'A');
     grafo.insertNode(b, 'B');
     grafo.insertNode(c, 'C');
     grafo.insertNode(d, 'D');
+    grafo.insertNode(e, 'E');
+    grafo.insertNode(f, 'F');
+    grafo.insertNode(g, 'G');
+    grafo.insertNode(h, 'H');
+    grafo.insertNode(i, 'I');
 
-    grafo.insertEdge(a,b,5);
-    grafo.insertEdge(b,c,5);
-    grafo.insertEdge(c,d,5);
+    // Archi (grafo direzionato)
+    grafo.insertEdge(a, b, 2);
+    grafo.insertEdge(a, c, 3);
 
+    grafo.insertEdge(b, d, 4);
+    grafo.insertEdge(b, e, 1);
 
-    std::cout << "--- Matrice di Adiacenza ---" << std::endl;
+    grafo.insertEdge(c, f, 2);
+
+    grafo.insertEdge(d, g, 3);
+    grafo.insertEdge(d, h, 5);
+
+    grafo.insertEdge(e, h, 2);
+
+    grafo.insertEdge(f, g, 4);
+    grafo.insertEdge(f, i, 6);
+
+    // Stampa grafo
+    std::cout << "--- GRAFO ---" << std::endl;
     grafo.toString();
 
-    // 5. Preparazione per la DFS
-    LinkedList<NodoGrafo> v1;
-    LinkedList<NodoGrafo> v2;
+    // Liste visitati
+    LinkedList<NodoGrafo> visitedDFS;
+    LinkedList<NodoGrafo> visitedBFS;
+    LinkedList<NodoGrafo> visitedPath;
 
+    // DFS
+    std::cout << "\nDFS:" << std::endl;
+    grafo.DFS(a, visitedDFS);
 
+    // Ricerca path A -> D
+    std::cout << "\n\nPATH da A a D:" << std::endl;
+    cost = 0;
+    if (grafo.findPath(a, d, visitedPath, cost)) {
+        std::cout << "\nCosto totale: " << cost << std::endl;
+    } else {
+        std::cout << "Percorso non trovato" << std::endl;
+    }
 
-    grafo.DFS(a,v1);
-
-
-    grafo.findPath(a,d,v2,cost);
-
-    std::cout << "\n" << cost;
+    // BFS
+    std::cout << "\nBFS:" << std::endl;
+    grafo.BFS(a, visitedBFS);
 
     return 0;
 }

@@ -85,6 +85,11 @@ class NodoGrafo{
             os << n.nodoId;
             return os;
         }
+
+        // Operatore < ( Necessario per LinkedList)
+        bool operator<(const NodoGrafo& other) const {
+            return nodoId < other.nodoId;
+        }
 };
 
 template <class E, class P>
@@ -295,31 +300,32 @@ class GrafoMatrix : public Grafo<E,P,NodoGrafo>{
         }
 
         void BFS(NodoGrafo start, LinkedList<NodoGrafo>& visited) {
-            LinkedList<NodoGrafo> queue; // Coda per i nodi da visitare
+            LinkedList<NodoGrafo> queue;
+                
+            // Enqueue iniziale
             queue.pushBack(start);
-
+            visited.pushBack(start);
+                
             while (!queue.isEmpty()) {
-                NodoGrafo currentNode = queue.getAt(0); // Prendi il primo nodo dalla coda
-                queue.removeAt(0); // Rimuovi il nodo dalla coda
+                NodoGrafo current = queue.getAt(0);
+                queue.removeAt(0);
+                
+                std::cout << matrice[current.getId()].etichetta << "\n"; // Nodo Visitato
+            
+                LinkedList<NodoGrafo*> adjList = getAdjacentNodes(current); // Recupero adiacenti
 
-                // Aggiungi il nodo corrente alla lista dei visitati
-                if (visited.searchElement(currentNode) == -1) {
-                    visited.pushBack(currentNode);
-                }
-
-                // Esplora i nodi adiacenti
-                for (int i = 0; i < dimensione; i++) {
-                    if (!matrice[currentNode.getId()].archi[i].vuoto) { // Se esiste un arco verso il nodo i
-                        NodoGrafo adjacentNode(i);
-                        // Controlla se il nodo adiacente è già stato visitato
-                        if (visited.searchElement(adjacentNode) == -1) {
-                            queue.pushBack(adjacentNode); // Aggiungi alla coda per la visita futura
-                        }
+            
+                for (int i = 0; i < adjList.size(); i++) {
+                
+                    NodoGrafo adj = *(adjList.getAt(i));
+                
+                    if (!visited.existsNode(adj)) {
+                        visited.pushBack(adj);
+                        queue.pushBack(adj);
                     }
                 }
             }
         }
-
 
         /* ======== toString ============ */
         void toString() const {

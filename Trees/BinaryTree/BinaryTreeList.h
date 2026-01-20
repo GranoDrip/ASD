@@ -175,10 +175,6 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
             return nullptr;
         }
         
-        // Ritorna la PROFONDITA
-
-        // Ritorna l'ALTEZZA
-
 
         // Lettura e Modifica
 

@@ -120,25 +120,23 @@ class HashTable: public Dictionary<K,T>{
             
         }
 
-        // Cancella una coppia con una determinata Chiave (IMPLEMENTAZIONE CON MARCATORE/TOMBSTONE)
+        // Cancella una coppia con una determinata Chiave (IMPLEMENTAZIONE CON MARCATORE)
         void erase(const K& key) override {
 
             int index = hashFunction(key) % divisor;
 
-            // 1. TROVA L'ELEMENTO: Scansione Lineare (Linear Probing)
+            // TROVA L'ELEMENTO: Scansione Lineare (Linear Probing)
             // Continua a cercare finché non trova un bucket MAI USATO (nullptr).
-            // Se incontra DELETED, prosegue (lo "salta") per non interrompere la catena di collisione.
+            // Se incontra DELETED, lo salta per non interrompere la catena di collisione.
             while (table[index] != nullptr) {
                 
                 // Se NON è il marcatore DELETED E la chiave corrisponde, abbiamo trovato l'elemento
                 if (table[index] != DELETED && table[index]->key == key) {
-                    
-                    // 2. CANCELLAZIONE FISICA e MARCATURA LOGICA
-                    
-                    // a) Libera la memoria dinamica dell'oggetto Pair
+                                        
+                    // Libera la memoria dinamica dell'oggetto Pair
                     delete table[index];
                     
-                    // b) Sostituisce il puntatore con il marcatore di cancellazione (Tombstone)
+                    // Sostituisce il puntatore con il marcatore di cancellazione (Tombstone)
                     table[index] = DELETED; 
                     
                     size--;
@@ -157,15 +155,15 @@ class HashTable: public Dictionary<K,T>{
 
             int index = hashFunction(key) % divisor;
 
-            // Scansione lineare finché non trova un bucket nullptr (mai usato)
+            // Scansione lineare finché non trova un bucket nullptr 
             while (table[index] != nullptr) {
                 
                 // Se NON è il Tombstone DELETED e la chiave corrisponde
                 if (table[index] != DELETED && table[index]->key == key) {
-                    return table[index]; // Elemento trovato
+                    return table[index]; // Allora Elemento trovato
                 }
                 
-                // Procede all'indice successivo (linear probing)
+                // Procedo all'indice successivo (linear probing)
                 index = (index + 1) % divisor;
             }
             

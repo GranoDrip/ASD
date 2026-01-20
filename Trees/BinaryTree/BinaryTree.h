@@ -1,10 +1,10 @@
-/* ============================================================
+/* 
  *  ALBERO BINARIO (Binary Tree)
  *
  *  Interfaccia astratta per la realizzazione di un albero binario,
  *  sia con array sequenziale che con puntatori.
  *  Definizione delle operazioni fondamentali
- * ============================================================ */
+ *  */
 
 #ifndef BINARY_TREE_H
 #define BINARY_TREE_H
