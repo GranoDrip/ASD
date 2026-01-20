@@ -24,9 +24,15 @@ int main() {
     grafo.toString();
 
     // 5. Preparazione per la DFS
-    LinkedList<NodoGrafo> visitati;
+    LinkedList<NodoGrafo> v1;
+    LinkedList<NodoGrafo> v2;
 
-    grafo.findPath(a,d,visitati,cost);
+
+
+    grafo.DFS(a,v1);
+
+
+    grafo.findPath(a,d,v2,cost);
 
     std::cout << "\n" << cost;
 

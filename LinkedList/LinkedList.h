@@ -1,34 +1,36 @@
-/*
-    Implementazione della Linked List singolarmente collegata.
-    Con i principali metodi di inserimento cancellazione ricerca ed aggiornamento
-    con alcune funzioni utili per risolvere gli esercizi
-*/
+/* IMPLEMENTAZIONE LINKED LIST (SINGOLARMENTE COLLEGATA)
+    
+    
+    == FUNZIONI INSERIMENTO ==
+    - pushFront(T e): Inserisce un elemento all'inizio della lista.
+    - pushBack(T e): Inserisce un elemento alla fine della lista.
+    - insertAt(int index, T e): Inserisce un elemento in una posizione i.
+    - insListaOrdinata(T e): Inserisce un elemento mantenendo l'ordine crescente/decrescente.
 
-/*
-== FUNZIONI DI INSERIMENTO ==
-- pushFront(T e)
-- pushBack(T e)
-- insertAt(int index, T e)
-- insertSorted(T e)
-- inserimentoOrdinato (T e) -- TODO
+    == FUNZIONI CANCELLAZIONE ==
+    - removeFront(): Elimina il primo elemento della lista.
+    - removeBack(): Elimina l'ultimo elemento della lista.
+    - removeAt(int index): Elimina l'elemento alla posizione specificata.
+    - clear(): Svuota la lista deallocando la memoria di ogni nodo.
 
-== FUNZIONI DI CANCELLAZIONE ==
-- removeFront()
-- removeBack()
-- removeAt(int index)
+    == FUNZIONI ACCESSO ==
+    - getAt(int index): Restituisce il valore memorizzato a un determinato indice.
+    - changeAt(T e, int index): Sovrascrive all'indice .
+    - searchElement(T e): Cerca un elemento e ne restituisce l'indice (-1 se non trovato).
+    - existsNode(T e): Verifica se un valore è presente nella lista (restituisce bool).
+    - exchange(p1, p2): Scambia i valori tra le posizioni p1 e p2 senza muovere i nodi.
+    - selectionSort(): Ordina gli elementi della lista utilizzando l'algoritmo Selection Sort.
 
-== FUNZIONI DI MODIFICA ==
-- searchElement(T e)
-- selectionSort()
-- changeAt(T e, int index)
+    == ALTRO  ==
+    - size(): numero totale di
+    - isEmpty() Verifica se ci sono nodi
+    - toString(): Stampa la lista
+    - reverse(): Inverte l'ordine dei nodi 
+    - divide(left, right): Divide la lista a metà 
+    - merge(list): Unisce la lista corrente con un'altra lista, mantenendo l'ordine
+    - operator!=(list): Confronta due liste 
 
-== FUNZIONI DI UTILITÀ ==
-- toString() const
-- reverse()
-- isEmpty() const
-- isSorted() -- TODO
-- merge(LinkedList<T> * list)
-- divide(LinkedList<T> * left, LinkedList<T> * right)
+    =============================================================================
 */
 
 #ifndef LINKEDLIST_H
@@ -45,7 +47,7 @@ class ListNode{
         T val;
         ListNode<T> * next = nullptr;
     
-    friend class LinkedList<T>;
+    friend class LinkedList<T>; // Classe Amica
 };
 
 template <class T> 
@@ -56,42 +58,29 @@ class LinkedList : public List<T>{
 
     public:
 
-        /*
-            Costruttore: Imposta a null il puntatore head
-        */
+        // Costruttore 
         LinkedList(){
             head = nullptr;
         }
-
         
+        // Distruttore
         ~LinkedList(){
-            ListNode<T> *curr = head; // Inizializza 'curr' al primo nodo della lista (head)
-            ListNode<T> *nxt; // Puntatore temporaneo per memorizzare il nodo successivo
+            ListNode<T> *curr = head; // Inizializzo alla testa
+            ListNode<T> *nxt; // Uso questo puntatore per il prossimo nodo 
         
             // Ciclo finché ci sono nodi da eliminare
             while (curr != nullptr) {
-                nxt = curr->next; // Salva il puntatore al nodo successivo
-                delete curr; // Elimina il nodo corrente per liberare memoria
-                curr = nxt; // Passa al nodo successivo
+                nxt = curr->next; // Salvo il puntatore al nodo successivo
+                delete curr; // Elimino il nodo corrente per liberare memoria
+                curr = nxt; // passo al nodo successivo
             }
+
             // Alla fine, tutti i nodi sono stati deallocati; posso anche fare:
             head = nullptr;
         }
 
-        /*
-            === FUNZIONI DI INSERIMENTO ===
-        
-            1. pushFront: inserisce un nuovo nodo all'inizio della lista.
-            2. pushBack: inserisce un nuovo nodo alla fine della lista.
-            3. insertAt: inserisce un nuovo nodo in una posizione specifica.
-            4. insertSorted: inserisce un nuovo nodo mantenendo la lista ordinata.
-            5. insertAfter: inserisce un nuovo nodo subito dopo un nodo specifico.
-        */
 
-        /*
-            Inserisce un nuovo nodo all'inizio della lista
-            Parametro: Elemento da inserire
-        */
+        // Inserisce e all'inizio della lista
         void pushFront(T e) override{
             
             ListNode<T> * newNode = new ListNode<T>();
@@ -105,10 +94,7 @@ class LinkedList : public List<T>{
 
         }
 
-        /*
-            Inserisce un nuovo nodo alla fine della lista
-            Parametro: Elemento da inserire
-        */
+        // Inserisco alla fine della lista
         void pushBack(T e) override {
             
             ListNode<T>  * curr = head; 
@@ -132,17 +118,12 @@ class LinkedList : public List<T>{
 
         }
 
-        /*
-            Inserisce un elemento in una posizione specifica
-            Se l'indice è > i, l'operazione non viene svolta
-            si potrebbe pensare di inserire l'elemento alla fine
-        */
+        // Inserisce l'elemento in una posizione specifica
         void insertAt(int index,T e) override{
             ListNode<T> * curr = head;
             ListNode<T> * tmp;
 
             int i = 0;
-
 
             if (!isEmpty()){
 
@@ -170,16 +151,6 @@ class LinkedList : public List<T>{
             }
        }
         
-        // ============================================================ //
-
-        /*
-            === FUNZIONI DI CANCELLAZIONE ===
-        
-            1. removeFront: rimuove un nodo all'inizio della lista.
-            2. removeBack: rimuove un nodo alla fine della lista.
-            3. removeAt: rimuove un nodo in una posizione specifica.
-
-        */
 
         // Rimuove il nodo all'inizio
         void removeFront() override{
@@ -246,15 +217,8 @@ class LinkedList : public List<T>{
             }
         }
 
-        /*
-            === FUNZIONI DI MODIFICA ===
-            1. searchElement: Ritorna l'indice di un certo elemento
-            2. selectionSort: Ordina la lista con il Selection Sort
-            3. changeAt: cambia un elemento all'indice 
-        */
-
         // Ricerca lineare di un elemento
-        int searchElement(T e) override{
+        int searchElement(T e) const override{
 
             ListNode<T> * curr = head;
             int index = -1;
@@ -301,6 +265,7 @@ class LinkedList : public List<T>{
             
         }
         
+        // Modifica il valore in un determinato indice
         void changeAt(T e,int index) override{
             ListNode<T> * curr = head;
             int i = 0;
@@ -317,7 +282,7 @@ class LinkedList : public List<T>{
         }
 
         // Ritorna il valore ad un indice
-        T getAt(int index) override{
+        T getAt(int index) const override{
             ListNode<T> * curr = head;
             int i = 0;
 
@@ -332,17 +297,18 @@ class LinkedList : public List<T>{
             return curr->val;
         }
 
-        /*
-            === FUNZIONI DI UTILITÀ ===
+        // Svuota la lista
+        void erase() override {
+            ListNode<T>* curr = head;
+            ListNode<T>* nextNode;
         
-            1. toString: stampa la lista.
-            2. reverse: inverte la lista.
-            3. isEmpty: verifica se la lista è vuota.
-            4. isSorted Controlla se è ordinata
-            5. merge: Merge di due liste ordinate ( Utile per il mergesort )
-            6. divide: divide la lista in due liste ( Utile per il mergesort )
-
-        */
+            while (curr != nullptr) {
+                nextNode = curr->next;
+                delete curr;
+                curr = nextNode;
+            }
+            head = nullptr;
+        }
 
         // Stampa la lista
         void toString() const override{
@@ -354,7 +320,7 @@ class LinkedList : public List<T>{
                 curr = curr->next;
             }
 
-            std::cout << "END" << std::endl;
+            std::cout << "FINE" << std::endl;
         }
 
         // Inverte una LL
@@ -378,8 +344,8 @@ class LinkedList : public List<T>{
             head = prev;
         }
 
-        // GUARDAMI BENE
-        void insListaOrdinata(T element){
+        // Inserisce l'elemento seguendo un ordinamento
+        void insListaOrdinata(T element) override{
             ListNode<T> * curr = head;
             ListNode<T> * prev = nullptr;
             ListNode<T>* newNode = new ListNode<T>();
@@ -389,7 +355,7 @@ class LinkedList : public List<T>{
             
             // Ordinamento crescente:
             
-            // Qui vado avanti fin quando non trovo un cazzo di elemento più grande
+            // Qui vado avanti fin quando non trovo elemento più grande
             while (curr != nullptr && curr->val < element) {
                 prev = curr;
                 curr = curr->next;
@@ -399,7 +365,7 @@ class LinkedList : public List<T>{
             if (prev == nullptr) {
                 newNode->next = head;
                 head = newNode;
-            // Questo è l'inserimento in mezzo ( nanz o cazz )
+            // Questo è l'inserimento in mezzo 
             } else {
                 newNode->next = curr;
                 prev->next = newNode;
@@ -407,15 +373,15 @@ class LinkedList : public List<T>{
         }
 
 
-        // Controlla se esiste un nodo
+        // Verifica se esiste un nodo
         bool existsNode(T e) const{
             ListNode<T>* curr = head;
         
-            // Scorre la lista finché non finisce
+            // Scorro la lista finche non finisce
             while (curr != nullptr) {
-                // Se il valore del nodo corrente è uguale a quello cercato
+                // SE il valore del nodo corrente è uguale a quello cercato
                 if (curr->val == e) {
-                    return true; // Elemento trovato
+                    return true; // ALLORA Elemento trovato
                 }
                 curr = curr->next; // Passa al nodo successivo
             }
@@ -424,13 +390,13 @@ class LinkedList : public List<T>{
             return false;
         }
 
-        // Controlla se la lista è vuota
+        // Controllo se la lista è vuota
         bool isEmpty() const override{
             return head==nullptr;
         }
 
         // Merge di questa e un altra lista
-        LinkedList merge(LinkedList<T> * list) { // Metto const perche non modifico la lista originale
+        LinkedList merge(LinkedList<T> * list){ 
             LinkedList<T> result = LinkedList<T>(); // Creiamo la lista 
 
             ListNode<T> * curr1 = head; // Nodo che scorre la lista 1
@@ -495,6 +461,7 @@ class LinkedList : public List<T>{
 
         }
 
+        // Ritorno la lunghezza della lista
         int size() const override{
 
             ListNode<T> * curr = head;
@@ -538,37 +505,36 @@ class LinkedList : public List<T>{
             
         } 
 
-    // exchange(p1, p2): scambia l'elemento in posizione p1 con quello in posizione p2
-    void exchange(int p1, int p2){
+        // exchange(p1, p2): scambia l'elemento in posizione p1 con quello in posizione p2
+        void exchange(int p1, int p2){
 
-        if (isEmpty() || p1 == p2) {
-            return;
-        }
-
-        ListNode<T> * curr = head;
-        ListNode<T> * nodeP1 = nullptr;
-        ListNode<T> * nodeP2 = nullptr;
-        int index = 0;
-
-        while (curr != nullptr && (nodeP1 == nullptr || nodeP2 == nullptr)) {
-            if (index == p1) {
-                nodeP1 = curr;
+            if (isEmpty() || p1 == p2) {
+                return;
             }
-            if (index == p2) {
-                nodeP2 = curr;
+
+            ListNode<T> * curr = head;
+            ListNode<T> * nodeP1 = nullptr;
+            ListNode<T> * nodeP2 = nullptr;
+            int index = 0;
+
+            while (curr != nullptr && (nodeP1 == nullptr || nodeP2 == nullptr)) {
+                if (index == p1) {
+                    nodeP1 = curr;
+                }
+                if (index == p2) {
+                    nodeP2 = curr;
+                }
+                index++;
+                curr = curr->next;
             }
-            index++;
-            curr = curr->next;
-        }
 
-        // Se non sono vuoti
-        if (nodeP1 != nullptr && nodeP2 != nullptr) {
-            T tmp = nodeP1->val;
-            nodeP1->val = nodeP2->val;
-            nodeP2->val = tmp;
+            // Se non sono vuoti
+            if (nodeP1 != nullptr && nodeP2 != nullptr) {
+                T tmp = nodeP1->val;
+                nodeP1->val = nodeP2->val;
+                nodeP2->val = tmp;
+            }
         }
-    }
-
 
 
 };
