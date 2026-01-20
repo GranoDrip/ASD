@@ -91,6 +91,7 @@ public:
         } 
     }
 
+    // Ritorna il numero di elementi nella coda
     int getSize(){
         return size;
     }

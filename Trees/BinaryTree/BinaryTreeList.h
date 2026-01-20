@@ -438,6 +438,35 @@ class BinaryTreeList: public BinaryTree<T , TreeNode<T>*>{
 
         }
 
+        // Cancellami
+        int sommaSottoAlberi(int k,TreeNode<T>* root, int& count){
+
+            if (root == nullptr)
+            {
+                return 0;
+            }
+
+            int sx = sommaSottoAlberi(k,root->sx,count);
+            int dx = sommaSottoAlberi(k,root->dx,count);
+
+            int s = sx + dx + root->val;
+
+            if (s == k)
+            {
+                count++;
+            }
+
+            return s;
+            
+        }
+
+        // TODO: CANCELLAMI
+        int contaSottoAlberi(int k,TreeNode<T>* root)
+        {
+            int count = 0;
+            sommaSottoAlberi(k,root,count);
+            return count;
+        }
     };
 
 #endif

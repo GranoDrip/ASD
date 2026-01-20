@@ -127,19 +127,18 @@ class GrafoMatrix : public Grafo<E,P,NodoGrafo>{
             return nodi;
         }
 
-        LinkedList<NodoGrafo*> getAdjacentNodes(NodoGrafo n) const{
-            LinkedList<NodoGrafo*> list; // Lista di nodi
-
-            for (int i = 0; i < dimensione; i++)
-            {
-                if (!matrice[n.getId()].archi[i].vuoto)
-                {
+        LinkedList<NodoGrafo*> getAdjacentNodes(NodoGrafo n) const override {
+            LinkedList<NodoGrafo*> list;
+        
+            for (int i = 0; i < dimensione; i++) {
+                // Se l'arco esiste nella matrice di adiacenza
+                if (!matrice[n.getId()].archi[i].vuoto) {
+                    // Creiamo un nuovo puntatore a NodoGrafo
                     list.pushBack(new NodoGrafo(i));
-                }           
-            }
+                    }           
+                }
 
             return list;
-
         }
 
         LinkedList<NodoGrafo> getNodes() const override{
@@ -233,6 +232,94 @@ class GrafoMatrix : public Grafo<E,P,NodoGrafo>{
         void setEdgeWeight(NodoGrafo n1, NodoGrafo n2, P weight) override{
             matrice[n1.getId()].archi[n2.getId()].peso = weight;
         }
+
+        /* ====== ALGORITMI DI VISITA ======= */
+
+        void DFS(NodoGrafo start, LinkedList<NodoGrafo>& visited) {
+
+            std::cout << matrice[start.getId()].etichetta << "\n"; // Stampo il nodo che sto visitando
+            visited.pushBack(start); // Lo visito
+
+            // Aquisico i suoi adiacenti e me li salvo
+            LinkedList<NodoGrafo*> adjList = getAdjacentNodes(start); 
+        
+            // Per ogni adiacente verifico se è già stato visitato, in alternativa lo visito ricorsivamente
+            for (int i = 0; i < adjList.size(); i++) {
+
+                NodoGrafo adjNode = *(adjList.getAt(i)); // "Primo" nodo adiacente
+            
+                // SE NON è STATO VISITATO ALLORA VISITO
+                if (!visited.existsNode(adjNode)) { 
+                    DFS(adjNode, visited);
+                }
+            } 
+        }
+
+        /*  Usando la DFS Ricorsiva calcolo il percorso
+            da un nodo verso un altro, calcolando anche il costo 
+            del cammino
+         */
+        bool findPath(NodoGrafo start, NodoGrafo target, LinkedList<NodoGrafo>& visited, int& cost){
+
+            // Visito start
+            visited.pushBack(start);
+
+            // Caso Base
+            // La destinazione è raggiunta
+            if (start.getId() == target.getId()){
+                std::cout << matrice[start.getId()].etichetta;
+                return true;
+            }
+
+            // Caso ricorsivo
+            LinkedList<NodoGrafo*> adjList = getAdjacentNodes(start); 
+        
+            // Per ogni adiacente verifico se è già stato visitato, in alternativa lo visito ricorsivamente
+            for (int i = 0; i < adjList.size(); i++) {
+
+                NodoGrafo adjNode = *(adjList.getAt(i)); // "Primo" nodo adiacente
+            
+                // SE NON è STATO VISITATO ALLORA VISITO
+                if (!visited.existsNode(adjNode)) { 
+                    if (findPath(adjNode,target,visited,cost))
+                    {
+                        cost += matrice[start.getId()].archi[adjNode.getId()].peso;
+                        std::cout << " <- " << matrice[start.getId()].etichetta;
+                        return true;
+                    }
+                }
+            } 
+
+            return false;
+
+        }
+
+        void BFS(NodoGrafo start, LinkedList<NodoGrafo>& visited) {
+            LinkedList<NodoGrafo> queue; // Coda per i nodi da visitare
+            queue.pushBack(start);
+
+            while (!queue.isEmpty()) {
+                NodoGrafo currentNode = queue.getAt(0); // Prendi il primo nodo dalla coda
+                queue.removeAt(0); // Rimuovi il nodo dalla coda
+
+                // Aggiungi il nodo corrente alla lista dei visitati
+                if (visited.searchElement(currentNode) == -1) {
+                    visited.pushBack(currentNode);
+                }
+
+                // Esplora i nodi adiacenti
+                for (int i = 0; i < dimensione; i++) {
+                    if (!matrice[currentNode.getId()].archi[i].vuoto) { // Se esiste un arco verso il nodo i
+                        NodoGrafo adjacentNode(i);
+                        // Controlla se il nodo adiacente è già stato visitato
+                        if (visited.searchElement(adjacentNode) == -1) {
+                            queue.pushBack(adjacentNode); // Aggiungi alla coda per la visita futura
+                        }
+                    }
+                }
+            }
+        }
+
 
         /* ======== toString ============ */
         void toString() const {

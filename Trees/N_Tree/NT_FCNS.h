@@ -89,6 +89,52 @@ class NaryTree_FCNS:public NaryTree<DataType,TreeNode<DataType>*>
             }
         }
 
+        // Cancellami :)
+        int maxLevel() const{
+            int k = 0; // Livello dove la somma è massima
+            int max = 0;
+            int sum = 0; // Somma del livello
+            int l = 0; // Livello corrente
+
+            Queue<TreeNode<DataType>*> q;
+            TreeNode<DataType>* current;
+            TreeNode<DataType>* child;
+
+            q.enqueue(root);
+
+            while (!q.isEmpty())
+            {
+                int levelSize = q.getSize();
+
+                sum = 0;
+                for (int i = 0; i < levelSize; i++)
+                {
+                    current = q.dequeue(); // Aquisiamo il nodo successivo
+                    
+                    sum += current->data; // Sommiamo i valori al livello corrente
+
+                    // Riempiamo la coda con i figli successivi
+                    child = current->firstChild;
+                    while (child != nullptr)
+                    {
+                        q.enqueue(child);
+                        child = child->nextSibling;
+                    }
+                }
+
+                if(sum > max){
+                    max = sum;
+                    k = l;
+                }
+                std::cout << "SONO AL LIVELLO " << l << " LA SOMMA E': " << sum <<"\n";
+                l++; // Scendiamo di profondità nell'albero
+
+            }
+
+            return k;
+        }
+
+
         int getWidth() const override{
             int w = 0; // Width -- Larghezza
             Queue<TreeNode<DataType>*> q; // Coda

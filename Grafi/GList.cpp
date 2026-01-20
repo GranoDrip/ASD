@@ -1,30 +1,34 @@
 #include "GrafoMatrix.h"
+#include "../LinkedList/LinkedList.h"
 #include <iostream>
 
-int main(){
+int main() {
 
     GrafoMatrix<char, int> grafo(5);
+    int cost = 0;
+    
+    NodoGrafo a(0), b(1), c(2), d(3);
 
-    NodoGrafo n1(1);
-    NodoGrafo n2(2);
-    NodoGrafo n3(3);
-    NodoGrafo n4(4);
+    // 3. Inseriamo i nodi con etichette
+    grafo.insertNode(a, 'A');
+    grafo.insertNode(b, 'B');
+    grafo.insertNode(c, 'C');
+    grafo.insertNode(d, 'D');
 
-    grafo.insertNode(n1,'A');
-    grafo.insertNode(n2,'B');
-    grafo.insertNode(n3,'C');
-    grafo.insertNode(n4,'D');
+    grafo.insertEdge(a,b,5);
+    grafo.insertEdge(b,c,5);
+    grafo.insertEdge(c,d,5);
 
-    grafo.insertEdge(n1,n2,1);
-    grafo.insertEdge(n2,n1,5);
 
-    grafo.insertEdge(n1,n3,2);
-    grafo.insertEdge(n2,n3,3);
-
-    grafo.insertEdge(n3,n4,1);
-    grafo.insertEdge(n4,n1,5);
-
+    std::cout << "--- Matrice di Adiacenza ---" << std::endl;
     grafo.toString();
+
+    // 5. Preparazione per la DFS
+    LinkedList<NodoGrafo> visitati;
+
+    grafo.findPath(a,d,visitati,cost);
+
+    std::cout << "\n" << cost;
 
     return 0;
 }

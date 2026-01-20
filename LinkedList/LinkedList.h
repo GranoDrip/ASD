@@ -257,7 +257,7 @@ class LinkedList : public List<T>{
         int searchElement(T e) override{
 
             ListNode<T> * curr = head;
-            int index = 0;
+            int index = -1;
             bool trovato = false;
 
             if (!isEmpty()){
@@ -378,6 +378,7 @@ class LinkedList : public List<T>{
             head = prev;
         }
 
+        // GUARDAMI BENE
         void insListaOrdinata(T element){
             ListNode<T> * curr = head;
             ListNode<T> * prev = nullptr;
@@ -406,7 +407,22 @@ class LinkedList : public List<T>{
         }
 
 
-    
+        // Controlla se esiste un nodo
+        bool existsNode(T e) const{
+            ListNode<T>* curr = head;
+        
+            // Scorre la lista finché non finisce
+            while (curr != nullptr) {
+                // Se il valore del nodo corrente è uguale a quello cercato
+                if (curr->val == e) {
+                    return true; // Elemento trovato
+                }
+                curr = curr->next; // Passa al nodo successivo
+            }
+        
+            // Se il ciclo finisce senza aver ritornato true, l'elemento non c'è
+            return false;
+        }
 
         // Controlla se la lista è vuota
         bool isEmpty() const override{
