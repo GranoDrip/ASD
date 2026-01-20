@@ -99,6 +99,28 @@ public:
         
     }
     
+    // Ordinamento di una Pila usando una pila di appoggio
+    Stack<T> sort() {
+        Stack<T> sorted;
+
+        while (!this->isEmpty()) {
+            T current = pop();
+            Stack<T> temp;
+
+            while (!sorted.isEmpty() && sorted.getTop() > current) {
+                temp.push(sorted.pop());
+            }
+
+            sorted.push(current);
+
+            while (!temp.isEmpty()) {
+                sorted.push(temp.pop());
+            }
+        }
+
+    return sorted;
+}
+
     bool isEmpty(){
         return top==nullptr;
     }

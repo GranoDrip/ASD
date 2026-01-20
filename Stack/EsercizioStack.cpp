@@ -16,23 +16,6 @@ int main(){
     godo.push(6);
     godo.push(6);
 
-    
-    while(!godo.isEmpty()){
-        n = godo.getTop();
-
-        if(n > k){
-            godo.pop();
-        }else{
-            temp.push(n);
-            godo.pop();
-        }
-    }
-
-    while (!temp.isEmpty())
-    {
-        finale.push(temp.pop());
-    }
-    
-    finale.toString();
+    godo.sort().toString();
 
 }
