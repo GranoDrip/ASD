@@ -308,10 +308,10 @@ class NaryTree_FCNS:public NaryTree<DataType,TreeNode<DataType>*>
                 if (node != nullptr)
                 {
                     // Passo ai figli
-                    preOrder(node->firstChild);
+                    postOrder(node->firstChild);
 
                     // Fratelli
-                    preOrder(node->nextSibling);
+                    postOrder(node->nextSibling);
 
                     // Visito
                     std::cout << node->data << " - ";
